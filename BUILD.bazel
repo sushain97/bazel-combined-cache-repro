@@ -1,0 +1,12 @@
+genrule(
+    name = "foo",
+    srcs = [],
+    outs = [
+        "a",
+        "b",
+    ],
+    cmd = """
+        echo a > $(RULEDIR)/a
+        echo b > $(RULEDIR)/b
+    """,
+)
