@@ -1,12 +1,6 @@
-genrule(
+load(":rules.bzl", "genfoo")
+
+genfoo(
     name = "foo",
-    srcs = [],
-    outs = [
-        "a",
-        "b",
-    ],
-    cmd = """
-        echo a > $(RULEDIR)/a
-        echo b > $(RULEDIR)/b
-    """,
+    # tags = ["no-remote-cache"],
 )
