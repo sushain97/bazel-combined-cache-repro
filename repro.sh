@@ -18,17 +18,24 @@ curl --retry 10 --retry-delay 1 -sfS --retry-all-errors http://localhost:8888/st
 echo
 
 bazel=${BAZEL_PATH:-bazel}
+bazel_flags=(
+    --remote_cache=grpc://localhost:9092
+    --remote_upload_local_results
+    --remote_download_toplevel
+    --nobuild_runfile_links
+    --experimental_build_event_upload_strategy=local
+)
 
 echo "initial build"
 echo "============="
 $bazel shutdown
 $bazel clean
-$bazel build //:foo --remote_cache=grpc://localhost:9092
+$bazel build //:foo "${bazel_flags[@]}"
 echo
 
 echo "cached build"
 echo "============="
 $bazel shutdown
 $bazel clean
-$bazel build //:foo --remote_cache=grpc://localhost:9092
+$bazel build //:foo "${bazel_flags[@]}"
 echo
