@@ -4,3 +4,10 @@ genfoo(
     name = "foo",
     # tags = ["no-remote-cache"],
 )
+
+genrule(
+    name = "foo_count",
+    srcs = [":foo"],
+    outs = ["foo_count.txt"],
+    cmd = "ls $< > $@",
+)

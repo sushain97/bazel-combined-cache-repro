@@ -30,12 +30,12 @@ echo "initial build"
 echo "============="
 $bazel shutdown
 $bazel clean
-$bazel build //:foo "${bazel_flags[@]}"
+$bazel build //:foo_count "${bazel_flags[@]}"
 echo
 
 echo "cached build"
 echo "============="
 $bazel shutdown
 $bazel clean
-$bazel build //:foo "${bazel_flags[@]}"
+$bazel build //:foo_count "${bazel_flags[@]}"
 echo
