@@ -24,6 +24,7 @@ bazel_flags=(
     --remote_download_toplevel
     --nobuild_runfile_links
     --experimental_build_event_upload_strategy=local
+    --experimental_allow_tags_propagation
 )
 
 echo "initial build"
