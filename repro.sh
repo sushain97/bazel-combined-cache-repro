@@ -25,6 +25,8 @@ bazel_flags=(
     --nobuild_runfile_links
     --experimental_build_event_upload_strategy=local
     --experimental_allow_tags_propagation
+    --repository_cache="$cache_dir/bazel/repo-cache/"
+    --disk_cache="$cache_dir/bazel/disk-cache/"
 )
 
 echo "initial build"
@@ -38,5 +40,7 @@ echo "cached build"
 echo "============="
 $bazel shutdown
 $bazel clean
+rm -rf "$cache_dir/bazel/disk-cache"
+rm -rf "$cache_dir/bazel/repo-cache"
 $bazel build //:foo_count "${bazel_flags[@]}"
 echo
