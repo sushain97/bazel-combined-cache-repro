@@ -34,8 +34,24 @@ echo $RANDOM > input
 $bazel build //:foo "${bazel_flags[@]}"
 echo
 
-echo "disk cache empty build"
+echo "disk cache hit build"
+echo "===================="
+$bazel shutdown
+$bazel clean
+$bazel build //:foo "${bazel_flags[@]}"
+echo
+
+echo "remote cache hit build"
 echo "======================"
+$bazel shutdown
+$bazel clean
+rm -rf "$cache_dir/bazel/disk-cache"
+rm -rf "$cache_dir/bazel/repo-cache"
+$bazel build //:foo "${bazel_flags[@]}"
+echo
+
+echo "cache miss build"
+echo "================"
 $bazel shutdown
 $bazel clean
 rm -rf "$cache_dir/bazel/disk-cache"
