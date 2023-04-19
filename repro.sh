@@ -33,6 +33,7 @@ echo "initial build"
 echo "============="
 $bazel shutdown
 $bazel clean
+echo $RANDOM > input
 $bazel build //:foo_count "${bazel_flags[@]}"
 echo
 
@@ -42,5 +43,6 @@ $bazel shutdown
 $bazel clean
 rm -rf "$cache_dir/bazel/disk-cache"
 rm -rf "$cache_dir/bazel/repo-cache"
+echo $RANDOM > input
 $bazel build //:foo_count "${bazel_flags[@]}"
 echo

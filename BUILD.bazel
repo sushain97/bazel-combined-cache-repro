@@ -2,6 +2,7 @@ load(":rules.bzl", "genfoo")
 
 genfoo(
     name = "foo",
+    srcs = ["input"],
     # tags = ["no-remote-cache"],
 )
 
