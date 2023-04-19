@@ -1,14 +1,14 @@
-load(":rules.bzl", "genfoo")
-
-genfoo(
-    name = "foo",
-    srcs = ["input"],
-    # tags = ["no-remote-cache"],
-)
-
 genrule(
-    name = "foo_count",
-    srcs = [":foo"],
-    outs = ["foo_count.txt"],
-    cmd = "ls $< > $@",
+    name = "foo",
+    srcs = [":input"],
+    outs = [
+        "a",
+        "b",
+        "c",
+    ],
+    cmd = """
+        echo a > $(RULEDIR)/a
+        echo b > $(RULEDIR)/b
+        echo c > $(RULEDIR)/c
+    """,
 )

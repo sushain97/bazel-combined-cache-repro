@@ -10,21 +10,18 @@ rm -rf "$cache_dir"
 echo "setup"
 echo "====="
 docker pull buchgr/bazel-remote-cache
-docker stop bazel-remote-cache || true
+docker kill bazel-remote-cache || true
 docker run --rm -u 1000:1000 -v "$cache_dir":/data \
     -p 8888:8080 -p 9092:9092 --name bazel-remote-cache \
     buchgr/bazel-remote-cache &
+trap "docker kill bazel-remote-cache >/dev/null" EXIT
 curl --retry 10 --retry-delay 1 -sfS --retry-all-errors http://localhost:8888/status
 echo
 
 bazel=${BAZEL_PATH:-bazel}
 bazel_flags=(
     --remote_cache=grpc://localhost:9092
-    --remote_upload_local_results
-    --remote_download_toplevel
-    --nobuild_runfile_links
     --experimental_build_event_upload_strategy=local
-    --experimental_allow_tags_propagation
     --repository_cache="$cache_dir/bazel/repo-cache/"
     --disk_cache="$cache_dir/bazel/disk-cache/"
 )
@@ -34,15 +31,15 @@ echo "============="
 $bazel shutdown
 $bazel clean
 echo $RANDOM > input
-$bazel build //:foo_count "${bazel_flags[@]}"
+$bazel build //:foo "${bazel_flags[@]}"
 echo
 
-echo "cached build"
-echo "============="
+echo "disk cache empty build"
+echo "======================"
 $bazel shutdown
 $bazel clean
 rm -rf "$cache_dir/bazel/disk-cache"
 rm -rf "$cache_dir/bazel/repo-cache"
 echo $RANDOM > input
-$bazel build //:foo_count "${bazel_flags[@]}"
+$bazel build //:foo "${bazel_flags[@]}"
 echo
